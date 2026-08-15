@@ -36,6 +36,7 @@ const [posts, setPosts]=useState([]);
 const [openSignIn, setOpenSignIn]=useState(false);
 const [openSignUp, setOpenSignUp]=useState(false);
 const [modalStyle, setModalStyle]=useState(getModalStyle);
+const [email, setEmail]=useState('');
 const [username, setUsername] = useState(
   window.localStorage.getItem('username') || ''
 );
@@ -138,6 +139,10 @@ const logOut = (event) => {
   setUsername('')
 }
 
+const signUp = (event) =>{
+  
+}
+
   return (
     <div className='app'>
 
@@ -167,6 +172,47 @@ const logOut = (event) => {
           <Button 
           type ="submit"
           onClick={signIn}>Login</Button>
+          
+          
+      </form>
+        </div>
+      </Modal>
+
+      <Modal
+      open = {openSignUp}
+      onClose={() => setOpenSignUp(false)}>
+        <div style = {modalStyle} className ={classes.paper}>
+      <form className ="app_signin">
+        <center>
+          <img className ="app_headerImage"
+          src ="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY-0y1vWRxqeWnurh214AIqYiQ08C9GjjTV9OBOg_BDw&s=10"
+          alt = "Instagram"/>
+        </center>
+          <Input
+          placeholder='username'
+          type ="text"
+          value ={username}
+          onChange={(e) => setUsername(e.target.value)}
+          />
+
+          <Input
+          placeholder='email'
+          type ="text"
+          value ={email}
+          onChange={(e) => setEmail(e.target.value)}
+          />
+
+
+          <Input
+          placeholder='password'
+          type ="password"
+          value ={password}
+          onChange={(e) => setPassword(e.target.value)}
+          />
+          
+          <Button 
+          type ="submit"
+          onClick={signUp}>Sign Up</Button>
           
           
       </form>
