@@ -99,7 +99,7 @@ useEffect(() => {
 },[]) 
 
 const signIn = (event) =>{
-  event.preventDefault();
+  event?.preventDefault();
 
   let formData = new FormData();
   formData.append('username', username)
@@ -140,7 +140,39 @@ const logOut = (event) => {
 }
 
 const signUp = (event) =>{
-  
+  event?.preventDefault();
+
+  const json_string = JSON.stringify({
+    username: username,
+    email: email,
+    password: password
+  })
+
+  const requestOptions ={
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: json_string
+  }
+
+  fetch(BASE_URL + 'user/', requestOptions)
+  .then (response =>{
+    if (response.ok){
+    return response.json()
+    }
+    throw response
+  })
+  .then(data =>{
+    //console.log(data);
+    signIn()  //automatically signs in the user after sign up
+  })
+  .catch (error =>{
+    console.log(error);
+    alert(error);
+  })
+
+  setOpenSignUp(false);
 }
 
   return (
