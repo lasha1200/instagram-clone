@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Post from './Post.js';
 import { Button, Input, Modal } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import ImageUpload from './ImageUpload.js';
 
 const BASE_URL ="http://localhost:8000/"
 
@@ -272,10 +273,22 @@ const signUp = (event) =>{
           <Post
           key = {post.id}
           post = {post}
+          authToken={authToken}
+          authTokenType={authTokenType}
           />
         ))
       }
        </div>
+
+       {authToken ? (
+         <ImageUpload
+         authToken={authToken} //pushes the authtoken and authtokentype to imageupload.js
+         authTokenType={authTokenType}
+         userId={userId}/>
+       ) : (
+        <h3>Please Login to Upload</h3>
+       )}
+
     </div>
   );
 }

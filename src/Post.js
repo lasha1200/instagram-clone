@@ -4,10 +4,11 @@ import { Avatar, Button } from '@mui/material';
 
 const BASE_URL ="http://localhost:8000/"
 
-function Post({post}){
+function Post({post, authToken, authTokenType}){
     
     const [imageUrl, setImageUrl] = useState('');
     const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState('');
     
     useEffect(() => {
       if(post.image_url_type === 'absolute'){
@@ -22,6 +23,35 @@ function Post({post}){
         setComments(post.comments)
     },[])
 
+    const handleDelete = (event) => {
+        event?.preventDefault();
+
+        const requestOptions = {
+            method: 'GET',
+            headers: new Headers({
+                'Authorization': authTokenType + ' ' + authToken
+            })
+        }
+        fetch(BASE_URL + 'post/delete/' + post.id, requestOptions)
+        .then(response=> {
+            if (response.ok){
+                alert('Post deleted');
+                window.location.reload();
+                window.scrollTo(0,0);
+            }
+            else{
+                alert('Something went wrong');
+            }
+        })
+        .catch(error => {
+            alert(error);
+        })
+    }
+
+    const postComment = (event) => {
+        event?.preventDefault();
+    }
+
 
     return (
         <div className='post'>
@@ -31,7 +61,7 @@ function Post({post}){
                 src= ''/>
             <div className='post_header_info'>
                 <h3>{post.user.username}</h3>
-                <Button className='post_delete'>Delete</Button>
+                <Button className='post_delete' onClick = {handleDelete}>Delete</Button>
             </div>
             </div>
             <img className='post_image'
@@ -42,6 +72,22 @@ function Post({post}){
                     <p> <strong>{comment.username}</strong> {comment.text}</p>
                 ))}
             </div>
+            {authToken && (
+                <form className ="post_commnetbox">
+                    <input className="post_input"
+                    type = "text"
+                    placeholder="Add a comment.."
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    />
+                    <button className = "post_button"
+                    type = "submit"
+                    disabled={!newComment}
+                    onClick={postComment}>
+                        Post
+                    </button>
+                </form>
+            )}
         </div>
     )
 }

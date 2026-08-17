@@ -53,3 +53,22 @@ margin-left: 10px;
   object-fit: contain;
   height: 80px;
 }
+
+.post_commnetbox{
+  display: flex;
+  margin-top: 10px;
+}
+
+.post_input{
+  flex: 1;
+  border: none;
+  border-top: 1px solid lightgray;
+  padding: 10px;
+}
+
+.post_button{
+  flex: 0;
+  border: none;
+  background-color: transparent;
+  color: lightblue;
+}
