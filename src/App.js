@@ -275,6 +275,7 @@ const signUp = (event) =>{
           post = {post}
           authToken={authToken}
           authTokenType={authTokenType}
+          username={username}
           />
         ))
       }

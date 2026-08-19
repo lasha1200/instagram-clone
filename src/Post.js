@@ -4,7 +4,7 @@ import { Avatar, Button } from '@mui/material';
 
 const BASE_URL ="http://localhost:8000/"
 
-function Post({post, authToken, authTokenType}){
+function Post({post, authToken, authTokenType, username}){
     
     const [imageUrl, setImageUrl] = useState('');
     const [comments, setComments] = useState([]);
@@ -50,6 +50,53 @@ function Post({post, authToken, authTokenType}){
 
     const postComment = (event) => {
         event?.preventDefault();
+
+        const json_string = JSON.stringify({
+            username: username,
+            post_id: post.id,
+            text: newComment
+        });
+
+        const requestOptions = {
+            method: 'POST',
+            headers: new Headers({
+                'Authorization': authTokenType + ' ' + authToken,
+                'Content-Type': 'application/json'
+            }),
+            body: json_string
+        }
+
+        fetch(BASE_URL + 'comment', requestOptions)
+        .then(response=> {
+            if (response.ok){
+                return response.json()
+            }
+        })
+        .then(data => {
+            fetchComments()
+        })
+        .catch(error => {
+            console.log(error)
+            alert(error)
+        })
+        .finally(() =>{
+            setNewComment('')
+        })
+    }
+
+    const fetchComments = () => {
+        fetch(BASE_URL + 'comment/all/' + post.id)
+        .then (response =>{
+            if (response.ok){
+                return response.json()
+            }
+        })
+        .then (data => {
+            setComments(data)
+        })
+        .catch (error => {
+            console.log(error)
+        })
     }
 
 
